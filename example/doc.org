@@ -1,0 +1,33 @@
+#+LANGUAGE: es
+#+TITLE: Exported Document
+#+SUBTITLE: Subtitle
+#+AUTHOR:
+#+DESCRIPTION: This is the description metadata
+#+KEYWORDS: list of keywords
+#+ODT_STYLES_FILE: ("template.ott" ("styles.xml" "Pictures/100002010000010E000000D988442DFFFD5ABCCB.png"))
+
+* Introduction
+
+This document must be exported to ODT.
+
+#+ATTR_ODT: :style "OrgPageBreakDefault"
+#+PAGEBREAK:
+
+** Usage
+
+Export the document to ODT using an elisp script.
+
+- List with dots
+- Second item
+- Third item
+
+* Lists an stuff
+
+1. Numbered
+2. Two
+3. Three
+   1. Three dot one
+
+| Header | Header 2 | Header 3 |   |   |
+|--------+----------+----------+---+---|
+|        |          | Content  |   |   |

@@ -1,0 +1,30 @@
+#!/bin/sh
+":"; exec emacs -Q --script "$0" "$@"
+
+(defun add-page-number (s)
+  (replace-regexp-in-string
+   "<text:index-entry-text/>"
+   "<text:index-entry-text/>
+    <text:index-entry-tab-stop style:type=\"right\" style:leader-char=\".\"/>
+    <text:index-entry-page-number/>"
+   (replace-regexp-in-string "Internet_20_link" "" s)))
+(advice-add 'org-odt--format-toc :filter-return #'add-page-number)
+
+(defun main ()
+  (let* ((orgfile (car argv))
+         (odtfile (replace-regexp-in-string "org$" "odt" orgfile))
+         (pdffile (replace-regexp-in-string "org$" "pdf" orgfile))
+         (soffice (concat
+                   "soffice --headless -env:UserInstallation=file://"
+                   (file-name-directory load-file-name)
+                   "profile.soffice ")))
+    (message (format "%s -> %s -> %s" orgfile odtfile pdffile))
+    (find-file-read-only orgfile)
+    (message "Export org to odt")
+    (org-odt-export-to-odt) ; :WARNING: this changes the CWD to the org file's directory
+    (message "Update odt references")
+    (message (shell-command-to-string (concat soffice "macro:///Standard.Module1.UpdateAllSaveAndExit " (file-name-nondirectory odtfile))))
+    (message "odt to pdf")
+    (message (shell-command-to-string (concat soffice "--convert-to pdf " (file-name-nondirectory odtfile))))))
+
+(main)

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE script:module PUBLIC "-//OpenOffice.org//DTD OfficeDocument 1.0//EN" "module.dtd">
+<script:module xmlns:script="http://openoffice.org/2000/script" script:name="Module1" script:language="StarBasic">REM  *****  BASIC  *****
+
+Sub UpdateAll
+    &apos;&apos;&apos;Update indexes, such as for the table of contents&apos;&apos;&apos;
+
+    Dim i As Integer
+
+    With ThisComponent &apos; Only process Writer documents
+        If .supportsService(&quot;com.sun.star.text.GenericTextDocument&quot;) Then
+            For i = 0 To .getDocumentIndexes().count - 1
+                .getDocumentIndexes().getByIndex(i).update()     
+            Next i
+        End If
+    End With &apos; ThisComponent
+End Sub
+
+Sub SaveAndExit
+    With ThisComponent
+        .store
+        .close(False)
+    End With
+End Sub
+
+Sub UpdateAllSaveAndExit
+    UpdateAll
+    SaveAndExit
+End Sub
+</script:module>
